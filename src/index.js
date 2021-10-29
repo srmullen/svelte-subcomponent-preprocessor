@@ -1,7 +1,7 @@
 const fs = require('fs-extra');
 const path = require('path');
 
-const out = './node_modules/.nestedComponentPreprocessor';
+const out = './node_modules/.svelte-subcomponent-preprocessor/';
 
 module.exports = function nestedComponentsPreprocesser() {
   const fileDependencies = {};
@@ -32,6 +32,8 @@ module.exports = function nestedComponentsPreprocesser() {
         }
         await Promise.all(files);
         fileDependencies[filename] = deps;
+
+        // Check that the component has a script tag. If not insert one. Otherwise the script preprocess wont get called.
         return {
           code,
           dependencies: deps.map(({ location }) => path.resolve(location))

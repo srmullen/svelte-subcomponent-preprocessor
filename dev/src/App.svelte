@@ -3,8 +3,8 @@
 	import Table from './components/Table.svelte';
 	export let name;
 
-	const data = ["Sean", "is", "awesome"];
-	const data2 = ["Jacqueline", "is", "amazing!!!!"];
+	const data = ["svelte", "subcomponent", "preprocessor"];
+	const data2 = ["try", "it", "out"];
 </script>
 
 <main>
