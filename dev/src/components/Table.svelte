@@ -16,11 +16,11 @@
 </style>
 
 <!-- svelte-ignore missing-declaration -->
-<Component name="Column">
+{#component Column}
   <script>
     export let name;
     export let number;
   </script>
 
   <div class="column">{name} {number}</div>
-</Component>
+{/component}

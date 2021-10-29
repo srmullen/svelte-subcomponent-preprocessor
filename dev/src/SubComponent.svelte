@@ -1,3 +1,7 @@
+<script context="module">
+	console.log('module context');
+</script>
+
 <script>
 	export let data = [];
 </script>
@@ -9,8 +13,7 @@
 	{/each}
 </ul>
 
-<!-- svelte-ignore missing-declaration -->
-<Component name="ListItem">
+{#component ListItem}
 	<script>
 		import { onMount } from 'svelte';
 		export let item;
@@ -20,20 +23,19 @@
 		});
 	</script>
 
-	<li>{item}</li>
-</Component>
+	<li>---{item}---</li>
+{/component}
 
-<!-- svelte-ignore missing-declaration -->
-<Component name="ListTitle">
+{#component ListTitle}
 	<script>
 		export let title = '';
 	</script>
 
-	<h1 class="title">{title}</h1>
+	<h1 class="title">---{title}---</h1>
 
 	<style>
 		.title {
 			color: 'red'
 		}
 	</style>
-</Component>
+{/component}
