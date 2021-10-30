@@ -4,13 +4,16 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest",
+    "test:watch": "jest --watchAll"
   },
   "author": "Sean Mullen",
   "license": "ISC",
   "package": "module",
   "dependencies": {
-    "fs-extra": "^10.0.0",
-    "svelte": "^3.43.2"
+    "fs-extra": "^10.0.0"
+  },
+  "devDependencies": {
+    "jest": "^27.3.1"
   }
 }
