@@ -1,6 +1,7 @@
 const fs = require('fs-extra');
 const path = require('path');
 const { stripComments } = require('./util');
+const { componentsRE } = require('./regexp');
 
 const out = './node_modules/.svelte-subcomponent-preprocessor/';
 
@@ -9,12 +10,9 @@ module.exports = function nestedComponentsPreprocesser() {
 
   return {
     markup: async ({ content, filename }) => {
-      // This regular expression matches html comments and #component blocks, but it only captures groups for
-      // component blocks. So if a match doesn't have a capture group, then it is a comment.
-      const fullREg = /<!--[\s\S]*-->|{#component\s+([A-Za-z]+[0-9]*)\s*}([\s\S]*?){\/component}/g;
       let code = content;
-      let matches = [...code.matchAll(fullREg)];
-      if (matches && matches.length) {
+      let matches = [...code.matchAll(componentsRE)];
+      if (matches.length) {
         const deps = [];
         const files = [];
         let offset = 0;
@@ -26,7 +24,6 @@ module.exports = function nestedComponentsPreprocesser() {
             const begin = match.index + offset;
             const end = begin + match[0].length;
             offset -= match[0].length;
-            console.log(begin, end, offset);
             code = code.substr(0, begin) + code.substr(end);
 
             const filedir = path.relative('.', path.parse(filename).dir);
