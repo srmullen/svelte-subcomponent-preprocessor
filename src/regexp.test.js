@@ -1,4 +1,4 @@
-const { componentsRE } = require('./regexp');
+const { componentsRE, scriptRE, contextAttrRE } = require('./regexp');
 
 const myComponent = `{#component MyComponent}
 <script>
@@ -95,6 +95,92 @@ describe('regex', () => {
         expect(matches[0][1]).toBeUndefined();
         expect(matches[0][2]).toBeUndefined();
       });
+
+      test('it captures comments and #components', () => {
+        const src = `<!-- svelte-ignore missing-declaration -->
+{#component ListItem}
+  <script>
+    import { onMount } from 'svelte';
+    export let item;
+
+    onMount(() => {
+      console.log(\`item is $\{item\}\`);
+    });
+  </script>
+
+  <li>^^^^{item}^^^^</li>
+{/component}
+
+<!-- {#component ListItem}
+	<script>
+		import { onMount } from 'svelte';
+		export let item;
+
+		onMount(() => {
+			console.log(\`item is $\{item\}\`);
+		});
+	</script>
+
+	<li>---{item}---</li>
+{/component} -->`;
+        const matches = [...src.matchAll(componentsRE)];
+        expect(matches.length).toEqual(3);
+        expect(matches[0][1]).toBeUndefined();
+        expect(matches[1][1]).toEqual('ListItem');
+        expect(matches[2][1]).toBeUndefined();
+      });
+    });
+  });
+
+  const scriptTag = `<script>
+    console.log('hello');
+  </script>`;
+
+  const scriptTagWithAttributes = `<script lang="ts" context="module" >
+  console.log('hello');
+</script>`;
+
+const attrTagDoubleQuote = `context="module"`;
+const attrTagSingleQuote = `context = 'module'`;
+const attrTagBackTick = 'context=`module`';
+
+  describe('scriptRE', () => {
+    test('it matches basic script tag', () => {
+      const matches = [...scriptTag.matchAll(scriptRE)];
+      expect(matches.length).toEqual(1);
+      expect(matches[0][0]).toEqual(scriptTag);
+    });
+
+    test('it captures attributes', () => {
+      const matches = [...scriptTagWithAttributes.matchAll(scriptRE)];
+      expect(matches.length).toEqual(1);
+      expect(matches[0][0]).toEqual(scriptTagWithAttributes);
+      expect(matches[0][1].trim()).toEqual('lang="ts" context="module"');
+    });
+  });
+
+  describe('contextAttrRE', () => {
+    test('it matches context attribute', () => {
+      const matches = [...attrTagDoubleQuote.matchAll(contextAttrRE)];
+      expect(matches.length).toEqual(1);
+      expect(matches[0][0]).toEqual('context="module"');
+    });
+
+    test('it matches context attribute', () => {
+      const matches = [...attrTagSingleQuote.matchAll(contextAttrRE)];
+      expect(matches.length).toEqual(1);
+      expect(matches[0][0]).toEqual(`context = 'module'`);
+    });
+
+    test('it matches context attribute', () => {
+      const matches = [...attrTagBackTick.matchAll(contextAttrRE)];
+      expect(matches.length).toEqual(1);
+      expect(matches[0][0]).toEqual('context=`module`');
+    });
+
+    test('it doesn\'t match other attributes', () => {
+      const matches = [...'lang="ts"'.matchAll(contextAttrRE)];
+      expect(matches.length).toEqual(0);
     });
   });
 });

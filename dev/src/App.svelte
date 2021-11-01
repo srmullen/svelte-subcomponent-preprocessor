@@ -1,6 +1,8 @@
 <script>
 	import SubComponent from './SubComponent.svelte';
 	import Table from './components/Table.svelte';
+	import NoScriptTag from './NoScriptTag.svelte';
+
 	export let name;
 
 	const data = ["svelte", "subcomponent", "preprocessor"];
@@ -12,7 +14,10 @@
 	<SubComponent {data} />
 	<SubComponent data={data2} />
 
+	<NoScriptTag />
+
 	<Table cols={['A', 'B', 'C']} />
+
 </main>
 
 <style>

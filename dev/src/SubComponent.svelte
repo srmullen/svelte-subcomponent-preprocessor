@@ -13,6 +13,7 @@
 	{/each}
 </ul>
 
+<!-- svelte-ignore missing-declaration -->
 {#component ListItem}
 	<script>
 		import { onMount } from 'svelte';

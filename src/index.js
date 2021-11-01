@@ -1,7 +1,7 @@
 const fs = require('fs-extra');
 const path = require('path');
-const { stripComments } = require('./util');
-const { componentsRE } = require('./regexp');
+const { stripComments, hasScriptTag } = require('./util');
+const { componentsRE, scriptRE, contextAttrRE } = require('./regexp');
 
 const out = './node_modules/.svelte-subcomponent-preprocessor/';
 
@@ -42,6 +42,11 @@ module.exports = function nestedComponentsPreprocesser() {
         fileDependencies[filename] = deps;
 
         // Check that the component has a script tag. If not insert one. Otherwise the script preprocess wont get called.
+        if (!hasScriptTag(code)) {
+          // Add script tag to the component.
+          // Needs to have something in the script or script function won't get called during preprocess.
+          code = `<script>//subcomponent</script>\n` + code;
+        }
         return {
           code,
           dependencies: deps.map(({ location }) => path.resolve(location))
