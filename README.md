@@ -1,6 +1,8 @@
 svelte-subcomponent-preprocessor
 ================================
 
+[![npm package](https://img.shields.io/npm/v/svelte-subcomponent-preprocessor)](https://www.npmjs.com/package/svelte-subcomponent-preprocessor)
+
 The `svelte-subcomponent-preprocessor` allows you to write more than one component within a svelte file. The subcomponents are written in a `{#component}` block and remain local to the svelte file. Here's an example
 
 ```html
