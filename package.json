@@ -7,7 +7,7 @@
     "test": "jest",
     "test:watch": "jest --watchAll"
   },
-  "author": "Sean Mullen",
+  "author": "Sean Mullen <sean@srmullen.com>",
   "license": "ISC",
   "package": "module",
   "dependencies": {
@@ -15,5 +15,12 @@
   },
   "devDependencies": {
     "jest": "^27.3.1"
+  },
+  "files": [
+    "src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/srmullen/svelte-subcomponent-preprocessor"
   }
 }

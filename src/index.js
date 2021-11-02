@@ -3,10 +3,12 @@ const path = require('path');
 const { stripComments, hasScriptTag } = require('./util');
 const { componentsRE, scriptRE, contextAttrRE } = require('./regexp');
 
-const out = './node_modules/.svelte-subcomponent-preprocessor/';
+const DEFAULT_OUT = './node_modules/.svelte-subcomponent-preprocessor/';
 
-module.exports = function nestedComponentsPreprocesser() {
+module.exports = function nestedComponentsPreprocesser(config = {}) {
   const fileDependencies = {};
+
+  const out = config.out || DEFAULT_OUT;
 
   return {
     markup: async ({ content, filename }) => {

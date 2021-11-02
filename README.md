@@ -56,6 +56,12 @@ svelte({
 
 If you're using [svelte-preprocess](https://github.com/sveltejs/svelte-preprocess) it must run after `svelte-subcomponent-preprocessor`.
 
+`svelte-subcomponent-preprocessor` works by extracting the `{#component}` blocks from your svelte code and writing them to disk. By default they are written to `./node_modules/.svelte-subcomponent-preprocessor/`. This can be changed with a configuration object passed to the preprocessor.
+
+`subcomponentPreprocessor({ out: './subcomponents' });`
+
+### Config with Vite or SvelteKit
+
 If you're using [Vite](https://github.com/vitejs/vite) or [SvelteKit](https://github.com/sveltejs/kit) you'll need a bit of extra configuration to get the subcomponents to work with the dev server. You need the following in your vite config.
 
 ```js
@@ -95,6 +101,10 @@ export default defineConfig({
 
 Or in SvelteKit the `server` and `optimizeDeps` config would go inside the [`svelte.config.js` `vite` object](https://kit.svelte.dev/docs#configuration-vite).
 
+### Config with Snowpack
+
+With [snowpack](https://github.com/snowpackjs/snowpack) the default out configuration will not work. Change the out location to someplace that will be watched by the snowpack dev server.
+
 Usage
 -----
 
@@ -110,7 +120,8 @@ To define a subcomponent put your component code inside a `#component` block. Pa
 <div>
 ```
 
-Issues
-------
+Limitations
+-----------
 
-- Need to handle commented-out components and script tags. Should have a function that strips out html comments before matching regexes.
+- Does not currently work with [snowpack](https://github.com/snowpackjs/snowpack). It may be possible to change the snowpack config to get it to work, but I'm not sure how.
+- Subcomponents cannot have interdependencies. i.e. Only the default export component can use the subcomponents.
